@@ -20,7 +20,7 @@ class GateController:
             GPIO.setup(relay.pin, GPIO.OUT)
 
     def setRelay(self, relay, high):
-        GPIO.output(relay.pin, GPIO.HIGH if high else GPIO.LOW)
+        GPIO.output(relay.pin, GPIO.LOW if high else GPIO.HIGH)
 
 def test():     
     controller = GateController()
@@ -35,4 +35,4 @@ def test():
         controller.setRelay(GateController.Relay.THREE, state)    
         state = not state
 
-test()
+#test()
