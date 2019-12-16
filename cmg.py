@@ -19,8 +19,8 @@ class GateController:
         for relay in GateController.Relay:
             GPIO.setup(relay.pin, GPIO.OUT)
 
-    def setRelay(self, relay, high):
-        GPIO.output(relay.pin, GPIO.LOW if high else GPIO.HIGH)
+    def setRelay(self, relay, enabled):
+        GPIO.output(relay.pin, GPIO.LOW if enabled else GPIO.HIGH)
 
 def test():     
     controller = GateController()
