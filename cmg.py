@@ -2,14 +2,6 @@ import RPi.GPIO as GPIO
 import time
 from enum import Enum
     
-while False:
-    time.sleep(1)
-    print("high")
-    GPIO.output(pin, GPIO.HIGH)
-    time.sleep(1)
-    print("low")
-    GPIO.output(pin, GPIO.LOW)
-
 class GateController:
     class Relay(Enum):
         ONE = 1, 37    # P25 = GPIO26, Pin 37
@@ -29,15 +21,18 @@ class GateController:
 
     def setRelay(self, relay, high):
         GPIO.output(relay.pin, GPIO.HIGH if high else GPIO.LOW)
-    
-controller = GateController()
 
-state = True
-while True:
-    time.sleep(1)
-    controller.setRelay(GateController.Relay.ONE, state)
-    time.sleep(1)
-    controller.setRelay(GateController.Relay.TWO, state)
-    time.sleep(1)
-    controller.setRelay(GateController.Relay.THREE, state)    
-    state = not state
+def test():     
+    controller = GateController()
+
+    state = True
+    while True:
+        time.sleep(1)
+        controller.setRelay(GateController.Relay.ONE, state)
+        time.sleep(1)
+        controller.setRelay(GateController.Relay.TWO, state)
+        time.sleep(1)
+        controller.setRelay(GateController.Relay.THREE, state)    
+        state = not state
+
+test()
