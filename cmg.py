@@ -1,26 +1,28 @@
 import RPi.GPIO as GPIO
 import time
 from enum import Enum
-    
-class GateController:
-    class Relay(Enum):
-        ONE = 1, 37    # P25 = GPIO26, Pin 37
-        TWO = 2, 38    # P28 = GPIO20, Pin 38
-        THREE = 3, 40  # P29 = GPIO21, Pin 40
 
-        def __new__(clazz, relay, pin):
-            obj = object.__new__(clazz)
-            obj._value_ = relay
-            obj.pin = pin
-            return obj
-    
-    def __init__(self):
+class RelayBank:
+    def __init__(self, relayPinList):
+        self.relayPinList = relayPinList
+        
         GPIO.setmode(GPIO.BOARD)
-        for relay in GateController.Relay:
-            GPIO.setup(relay.pin, GPIO.OUT)
+        for relayPin in self.relayPinList:
+            GPIO.setup(relayPin, GPIO.OUT)
 
     def setRelay(self, relay, enabled):
-        GPIO.output(relay.pin, GPIO.LOW if enabled else GPIO.HIGH)
+        GPIO.output(self.relayPinList[relay], GPIO.LOW if enabled else GPIO.HIGH)
+    
+RELAY_PIN_LIST = [24, 21, 19, 23]    
+
+class GateController:
+    def setRelay(self, relayNumber, state):
+        print("R(%d): %d" % (relayNumber, state))
+        self.relayBank.setRelay(relayNumber, state)
+        
+    def __init__(self):
+        # These are the pins on the RPI for the relays
+        self.relayBank = RelayBank(RELAY_PIN_LIST)
 
 def test():     
     controller = GateController()
@@ -28,11 +30,12 @@ def test():
     state = True
     while True:
         time.sleep(1)
-        controller.setRelay(GateController.Relay.ONE, state)
+        controller.setRelay(0, state)
         time.sleep(1)
-        controller.setRelay(GateController.Relay.TWO, state)
+        controller.setRelay(1, state)
         time.sleep(1)
-        controller.setRelay(GateController.Relay.THREE, state)    
+        controller.setRelay(2, state)    
         state = not state
+
 
 #test()

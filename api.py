@@ -9,7 +9,7 @@ logging.basicConfig()
 
 # To run:
 #
-#  hug -f hug.py
+#  hug -f api.py
 #
 # To test locally (enable and disable these relays)
 #
@@ -19,15 +19,14 @@ logging.basicConfig()
 @hug.put('/relay/{number}')
 def enableRelay(number: hug.types.number):
     """Enable a relay"""
-    relay = cmg.GateController.Relay(number)
     controller = cmg.GateController()
-    controller.setRelay(relay, True)
+    controller.setRelay(number, True)
+    return "Enabled Relay {0}".format(number)
 
 @hug.delete('/relay/{number}')
 def disableRelay(number: hug.types.number):
     """Disable a relay"""
-    relay = cmg.GateController.Relay(number)
     controller = cmg.GateController()
-    controller.setRelay(relay, False)
-
+    controller.setRelay(number, False)
+    return "Diabled Relay {0}".format(number)
 
