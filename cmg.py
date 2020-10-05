@@ -1,6 +1,5 @@
 import RPi.GPIO as GPIO
 import time
-from enum import Enum
 
 class RelayBank:
     def __init__(self, relayPinList):
